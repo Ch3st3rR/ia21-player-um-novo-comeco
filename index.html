@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8"> 
+        <title>Player</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            div.ia21-player {
+                border: 1px solid black; 
+            }
+
+            div.ia21-player .controllers {
+                display: flex;
+                border-top: 1px solid black; 
+            }
+
+            div.ia21-player div.controller button.play.pause {
+                background-color: transparent;
+                border: 0 none;
+                border-right: 1px solid black;
+                cursor: pointer; 
+            }
+
+            div.ia21-player div.controllers div.dragbar {
+                flex-grow: 1;
+                position: relative; 
+            }
+
+            div.ia21-player div.controllers div.dragbar.before {
+                content: " ";
+                position: absolute; 
+                top: calc(50%)
+            }
+
+            div.ia21-player div.controllers div.dragonbar div.draggable {
+                background-color: black;
+                width: .5rem;
+                height: .5rem; 
+                border-radius: 50%; 
+                cursor: pointer;
+            }
+        </style>
+    </head> 
+    <body>
+
+        <div class="ia21-player">
+            <video></video>
+        </div class="controllers">
+        <button class="play-pause" data-datetime="||">
+            ?
+        </button>
+        <div class="dragbar timeline">
+            <div class="dragable"></div>
+        </div>
+        <div class="timer">
+            00:00
+        </div>
+        <div class="dragbar volume">
+    </div class="dragable"></div> 
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
