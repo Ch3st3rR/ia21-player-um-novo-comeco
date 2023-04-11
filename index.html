@@ -12,7 +12,7 @@
             display: flex;
             flex-direction: column;
             border: 1px solid black;
-            width: 200px;
+            width: 800px;
         }
         
         div.ia21-player video {
@@ -41,13 +41,13 @@
             content: " ";
             position: absolute;
             top: calc(50% - .5px);
-            border-top: 1px solid black;
+            border-top: 1px solid rgb(255, 0, 0);
             width: 100%;
         }
         
         div.ia21-player div.controllers div.dragbar div.draggable {
             --percent: 0%;
-            background-color: black;
+            background-color: rgb(110, 53, 53);
             width: .5rem;
             height: .5rem;
             border-radius: 50%;
@@ -62,8 +62,8 @@
     
     <div class="ia21-player">
         <video>
-            <source src="https://www.w3schools.com/html/movie.mp4" type="video/mp4">
-            <source src="https://www.w3schools.com/html/movie.ogg" type="video/ogg">
+            <!-- https://gist.github.com/jsturgis/3b19447b304616f18657 -->
+            <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
         </video>
         <div class="controllers">
             <button class="play-pause" data-deleteme="⏸">
@@ -80,46 +80,45 @@
             </div>
         </div>
     </div>
-    
-    
-    <div class="ia21-player">
-        <video>
-            <source src="https://www.w3schools.com/html/movie.mp4" type="video/mp4">
-            <source src="https://www.w3schools.com/html/movie.ogg" type="video/ogg">
-        </video>
-        <div class="controllers">
-            <button class="play-pause" data-deleteme="⏸">
-                ▶ 
-            </button>
-            <div class="dragbar timeline">
-                <div class="draggable"></div>
-            </div>
-            <div class="timer">
-                00:00
-            </div>
-            <div class="dragbar volume">
-                <div class="draggable"></div>
-            </div>
-        </div>
-    </div>
+
     
     <script>
-        const containers = document.querySelectorAll("div.ia21-player")
+          const containers = document.querySelectorAll("div.ia21-player")
        
-        containers.forEach(container => { 
-            const btPlayPause = container.querySelector("button.play-pause")
-            const video = container.querySelector("video")
-            const timeline = container.querySelector(".dragbar.timeline")
-            const timelineDrag = timeline.querySelector(".draggable")
-            const timer = container.querySelector(".timer")
-            btPlayPause.addEventListener("click", () => video.play())
+       containers.forEach(container => { 
+           const btPlayPause = container.querySelector("button.play-pause")
+           const video = container.querySelector("video")
+           const timeline = container.querySelector(".dragbar.timeline")
+           const timelineDrag = timeline.querySelector(".draggable")
+           const timer = container.querySelector("div.timer")
+           
+           playPause.addEventListener("click", () => {
+            if (video.paused) {
+                video.play();
+                playPause.InnerHTML = "||"; 
+            } else {
+                video.pause(); 
+                playPause.InnerHTML = "▶"; 
+            }
+       })
+        }) 
+       
+           video.currentTime = 50
 
-            video.addEventListener("timeupdate", () => {
-                const percent = (video.currentTime / video.duration) * 100
-                timelineDrag.style.setProperty("--percent", `${percent}%`) 
-                timer.innerText = Math.floor(video.currentTime)
-            })
-        })
+           video.addEventListener("timeupdate", () => {
+            const percent = video.currentTime / video.duration * 100
+            timelineDrag.style.left = "calc(" + percent + "% - .25rem)"
+
+            const minutos = Math.floor(video.currentTime / 60);
+            const segundos = Math.floor(video.currentTime % 60); 
+            const min = String(minutos).padStart(2,'0'); 
+            const seg = String(segundos).padStart(2, '0'); 
+            const timeString = `$(min):$(seg)`; 
+            timer.innerText = timeString; 
+           })
+
     </script>
 </body>
 </html>
+
+
