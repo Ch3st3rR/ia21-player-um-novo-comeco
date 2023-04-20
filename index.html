@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="utf8">
     <title>Player</title>
     <style>
+
+body {
+  background-color: #2e212a;
+}
         * {
             box-sizing: border-box;
         }
@@ -11,18 +16,18 @@
         div.ia21-player {
             display: flex;
             flex-direction: column;
-            border: 1px solid black;
-            width: 800px;
+            border: 1px solid rgb(41, 9, 9);
+            width: 900px;
         }
         
         div.ia21-player video {
             width: 100%;
         }
         
-        div.ia21-player div.controllers { 
+        div.ia21-player div.controllers {
             display: flex;
-            border-top: 1px solid black;
-            column-gap: 10px;
+            border-top: 1px solid rgb(88, 46, 46);
+            column-gap: 100px;
         }
         
         div.ia21-player div.controllers button.play-pause {
@@ -30,6 +35,7 @@
             border: 0 none;
             border-right: 1px solid black;
             cursor: pointer;
+            
         }
         
         div.ia21-player div.controllers div.dragbar {
@@ -41,13 +47,13 @@
             content: " ";
             position: absolute;
             top: calc(50% - .5px);
-            border-top: 1px solid rgb(255, 0, 0);
+            border-top: 1px solid rgb(255, 193, 193);
             width: 100%;
         }
         
         div.ia21-player div.controllers div.dragbar div.draggable {
             --percent: 0%;
-            background-color: rgb(110, 53, 53);
+            background-color: rgb(255, 0, 0);
             width: .5rem;
             height: .5rem;
             border-radius: 50%;
@@ -58,16 +64,21 @@
         }
     </style>
 </head>
+
 <body>
     
     <div class="ia21-player">
         <video>
             <!-- https://gist.github.com/jsturgis/3b19447b304616f18657 -->
-            <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+            <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            type="video/mp4">
         </video>
         <div class="controllers">
-            <button class="play-pause" data-deleteme="⏸">
-                ▶ 
+            <button class="play-pause" data-pause-icon="sonic.gif" data-play-icon="two_buttons.png">
+                <img src="sonic.gif" alt="Sonic" />
+                <img src="two_buttons.png" alt="two_buttons" />
+              </button>
+                
             </button>
             <div class="dragbar timeline">
                 <div class="draggable"></div>
@@ -80,45 +91,50 @@
             </div>
         </div>
     </div>
-
     
     <script>
-          const containers = document.querySelectorAll("div.ia21-player")
-       
-       containers.forEach(container => { 
-           const btPlayPause = container.querySelector("button.play-pause")
-           const video = container.querySelector("video")
-           const timeline = container.querySelector(".dragbar.timeline")
-           const timelineDrag = timeline.querySelector(".draggable")
-           const timer = container.querySelector("div.timer")
-           
-           playPause.addEventListener("click", () => {
-            if (video.paused) {
-                video.play();
-                playPause.InnerHTML = "||"; 
-            } else {
-                video.pause(); 
-                playPause.InnerHTML = "▶"; 
-            }
-       })
-        }) 
-       
-           video.currentTime = 50
-
-           video.addEventListener("timeupdate", () => {
-            const percent = video.currentTime / video.duration * 100
-            timelineDrag.style.left = "calc(" + percent + "% - .25rem)"
-
-            const minutos = Math.floor(video.currentTime / 60);
-            const segundos = Math.floor(video.currentTime % 60); 
-            const min = String(minutos).padStart(2,'0'); 
-            const seg = String(segundos).padStart(2, '0'); 
-            const timeString = `$(min):$(seg)`; 
-            timer.innerText = timeString; 
-           })
-
+        const containers = document.querySelectorAll("div.ia21-player")
+        
+        containers.forEach(container => {
+            const btPlayPause = container.querySelector("button.play-pause")
+            const video = container.querySelector("video")
+            const timeline = container.querySelector(".dragbar.timeline")
+            const timelineDrag = timeline.querySelector(".draggable")
+            const timer = container.querySelector(".timer")
+            
+            btPlayPause.addEventListener("click", () => {
+                if (video.paused) {
+                    video.play()
+                    btPlayPause.innerText = btPlayPause.dataset.pauseIcon
+                    return
+                }
+                
+                video.pause()
+                btPlayPause.innerText = btPlayPause.dataset.playIcon
+            })
+            
+            video.currentTime = 58
+            
+            video.addEventListener("timeupdate", () => {
+                const percent = (video.currentTime / video.duration) * 100
+                timelineDrag.style.setProperty("--percent", `${percent}%`)
+                timer.innerText = Math.floor(video.currentTime)
+            })
+            
+            // ---✀------------------------------------------------------
+            
+            const dragbars = container.querySelectorAll(".dragbar")
+            
+            dragbars.forEach(dragbar => {
+                const dragabble = dragbar.querySelector(".draggable")
+                dragbar.addEventListener("click", ev => {
+                    const width = Math.floor(dragbar.getBoundingClientRect().width)
+                    const percent = (ev.offsetX / width) * 100
+                    dragabble.style.setProperty("--percent", `${percent}%`)
+                })
+            })
+        })
     </script>
 </body>
+
 </html>
-
-
