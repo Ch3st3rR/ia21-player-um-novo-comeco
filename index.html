@@ -75,8 +75,7 @@ body {
         </video>
         <div class="controllers">
             <button class="play-pause" data-pause-icon="sonic.gif" data-play-icon="two_buttons.png">
-                <img src="sonic.gif" alt="Sonic" />
-                <img src="two_buttons.png" alt="two_buttons" />
+                <img src="two_buttons.png" alt="Sonic" id="pauseAndPlay-button" />
               </button>
                 
             </button>
@@ -105,12 +104,13 @@ body {
             btPlayPause.addEventListener("click", () => {
                 if (video.paused) {
                     video.play()
-                    btPlayPause.innerText = btPlayPause.dataset.pauseIcon
+                    // btPlayPause.innerText = btPlayPause.dataset.pauseIcon
+		    document.getElementById("pauseAndPlay-button").src = "sonic.gif";
                     return
                 }
                 
                 video.pause()
-                btPlayPause.innerText = btPlayPause.dataset.playIcon
+		document.getElementById("pauseAndPlay-button").src = "two_buttons.png";
             })
             
             video.currentTime = 58
@@ -118,7 +118,10 @@ body {
             video.addEventListener("timeupdate", () => {
                 const percent = (video.currentTime / video.duration) * 100
                 timelineDrag.style.setProperty("--percent", `${percent}%`)
-                timer.innerText = Math.floor(video.currentTime)
+                // timer.innerText = Math.floor(video.currentTime)
+		let videoTimeMin = Math.floor(video.currentTime / 60);
+		let videoTimeSec = video.currentTime % 60;
+		timer.innerText = videoTimeMin + ": " + videoTimeSec.toFixed(0);
             })
             
             // ---✀------------------------------------------------------
