@@ -6,18 +6,39 @@
     <title>Player</title>
     <style>
 
-body {
-  background-color: #2e212a;
-}
         * {
             box-sizing: border-box;
+			margin: 0;
+			padding: 0;
         }
+
+		body {
+		  background-color: #2e212a;
+		}
+
+		header {
+			style: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			width: 100vw;
+			height: 7vh;
+			background-color: rgb(20, 3, 3);
+			padding: 1vh;
+		}
+
+		header img {
+			float: left;
+			width: 5vh;
+			height: 5vh;
+			border-radius: 50%;
+		}
         
         div.ia21-player {
             display: flex;
             flex-direction: column;
             border: 1px solid rgb(41, 9, 9);
             width: 900px;
+			margin: auto;
         }
         
         div.ia21-player video {
@@ -62,11 +83,22 @@ body {
             top: calc(50% - .25rem);
             left: calc(var(--percent) - .25rem)
         }
+
+		div.ia21-player div.controllers div.descriptionShowButton button {
+			background: none;
+			border: none;
+			cursor: pointer;
+			color: red;
+			font-size: 2em;
+		}
     </style>
 </head>
 
 <body>
-    
+    <header>
+		<!-- change to be the logo -->
+		<img src="./res/youtube broadcast.png" alt="Logo">
+	</header>
     <div class="ia21-player">
         <video>
             <!-- https://gist.github.com/jsturgis/3b19447b304616f18657 -->
@@ -74,8 +106,8 @@ body {
             type="video/mp4">
         </video>
         <div class="controllers">
-            <button class="play-pause" data-pause-icon="sonic.gif" data-play-icon="two_buttons.png">
-                <img src="two_buttons.png" alt="Sonic" id="pauseAndPlay-button" />
+            <button class="play-pause" data-pause-icon="res/sonic.gif" data-play-icon="res/two_buttons.png">
+                <img src="res/two_buttons.png" alt="Sonic" id="pauseAndPlay-button" />
               </button>
                 
             </button>
@@ -88,11 +120,18 @@ body {
             <div class="dragbar volume">
                 <div class="draggable"></div>
             </div>
+			<div class="descriptionShowButton">
+					<button title="Show description">...</button>
+			</div>
         </div>
+		<p class="description"></p>
     </div>
     
     <script>
         const containers = document.querySelectorAll("div.ia21-player")
+		const descriptionButton = document.querySelector(".descriptionShowButton");
+		const descriptionElement = document.querySelector(".description");
+		let descriptionShowing = false;
         
         containers.forEach(container => {
             const btPlayPause = container.querySelector("button.play-pause")
@@ -105,12 +144,12 @@ body {
                 if (video.paused) {
                     video.play()
                     // btPlayPause.innerText = btPlayPause.dataset.pauseIcon
-		    document.getElementById("pauseAndPlay-button").src = "sonic.gif";
+		    document.getElementById("pauseAndPlay-button").src = "res/sonic.gif";
                     return
                 }
                 
                 video.pause()
-		document.getElementById("pauseAndPlay-button").src = "two_buttons.png";
+		document.getElementById("pauseAndPlay-button").src = "res/two_buttons.png";
             })
             
             video.currentTime = 58
@@ -137,6 +176,16 @@ body {
                 })
             })
         })
+		descriptionButton.addEventListener("click", () => {
+			if (descriptionShowing == false) {
+				descriptionShowing = true;
+				descriptionElement.innerText = "NOVA NOTÍCIA: Coelhinho pagando pau pra natureza"; // change the text to be the description of the video
+			}
+			else {
+				descriptionShowing = false;
+				descriptionElement.innerText = "";
+			}
+		});
     </script>
 </body>
 
